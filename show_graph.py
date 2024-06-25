@@ -71,11 +71,12 @@ def show_graph(head, relation, tail):
 
 
 if __name__ == "__main__":
-    file_path = "[INSERT FILE PATH]"
+    file_path = "./example_data/oracle_wikipedia_kg.txt"
 
     # Define the heads, relations, and tails
     with open(file_path, "r") as f:
-        lines = [i.replace("[", "").replace("]", "").replace("\n", "").replace("'", "").split(", ") for i in f.readlines()]
+        #lines = [i.replace("[", "").replace("]", "").replace("\n", "").replace("'", "").split(", ") for i in f.readlines()]
+        lines = [[item.strip("'") for item in line.strip("[]\n").split("', '")] for line in f.readlines()]
         unzipped = list(zip(*lines))
         h, r, t = unzipped[0], unzipped[1], unzipped[2]
 
