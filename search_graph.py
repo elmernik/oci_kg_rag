@@ -1,7 +1,6 @@
 import oracledb
 from langchain.embeddings import HuggingFaceEmbeddings
 import array
-from show_graph import show_graph
 from config_private import user, pwd, dsn, wloc, wpwd
 
 
@@ -80,6 +79,7 @@ def get_next_nodes(start_node, depth=1, parent_or_child="child"):
 
 
 if __name__ == "__main__":
+    from show_graph import show_graph
     # Define query
     question = "Who is Warren Buffets father?"
 

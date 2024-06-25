@@ -55,7 +55,7 @@
 ['Oracle Corporation', 'announced $1 billion investment in', 'Spain'],
 ['Oracle Corporation', 'announced investment in Spain on', 'June 20, 2024'],
 ['Oracle Corporation', 'announced new cloud region in', 'Madrid'],
-['Oracle Corporation', 'partnered with', 'Telefonica España']
+['Oracle Corporation', 'partnered with', 'Telefonica España'],
 ['Oracle Database', 'release version', '10g'],
 ['Oracle Corporation', 'shipped Oracle Database release 10g in', '2004'],
 ['10g', 'stands for', 'grid'],
@@ -93,7 +93,7 @@
 ['Oracle Fusion Middleware', 'includes', 'application server, system integration, business process management (BPM), user interaction, content management, identity management, business intelligence (BI) products'],
 ['Oracle Secure Enterprise Search (SES)', 'is', 'Oracle's enterprise-search offering'],
 ['Oracle Secure Enterprise Search (SES)', 'allows users to search', 'content across multiple locations'],
-['multiple locations', 'include', 'websites, XML files, file servers, content management systems, enterprise resource planning systems, customer relationship management systems, business intelligence systems, databases']
+['multiple locations', 'include', 'websites, XML files, file servers, content management systems, enterprise resource planning systems, customer relationship management systems, business intelligence systems, databases'],
 ['Oracle Beehive', 'released in', '2008'],
 ['Oracle Beehive', 'is', 'collaboration software'],
 ['Oracle Beehive', 'provides', 'team workspaces'],
@@ -141,7 +141,7 @@
 ['ZFS', 'combines', 'file-system and logical volume management functionality'],
 ['BtrFS', 'is', 'an improvement over existing Linux ext4 filesystem'],
 ['BtrFS', 'offers features approaching', 'ZFS'],
-['Oracle Corporation', 'develops and supports', 'Oracle Solaris, Oracle Linux']
+['Oracle Corporation', 'develops and supports', 'Oracle Solaris, Oracle Linux'],
 ['Sun hardware range', 'acquired by', 'Oracle Corporation'],
 ['Oracle Corporation', 'purchased', 'Sun Microsystems'],
 ['Oracle SPARC T-series servers and M-series mainframes', 'developed and released after', 'Sun acquisition'],
@@ -195,7 +195,7 @@
 ['TikTok', 'must be sold to', 'a U.S. company by September 15, 2020'],
 ['Oracle Corporation', 'will become', 'TikTok's technology partner'],
 ['Oracle Corporation', 'will assume responsibility for', 'TikTok's U.S. user data'],
-['TikTok agreement', 'pending approval from', 'regulatory government bodies']
+['TikTok agreement', 'pending approval from', 'regulatory government bodies'],
 ['Oracle Corporation', 'laid off', '10% of its workforce in 1990'],
 ['Oracle Corporation', 'laid off', 'about 400 people in 1990'],
 ['Accounting errors', 'caused', 'Oracle to lay off employees'],

@@ -75,9 +75,8 @@ if __name__ == "__main__":
 
     # Define the heads, relations, and tails
     with open(file_path, "r") as f:
-        #lines = [i.replace("[", "").replace("]", "").replace("\n", "").replace("'", "").split(", ") for i in f.readlines()]
         lines = [[item.strip("'") for item in line.strip("[]\n").split("', '")] for line in f.readlines()]
         unzipped = list(zip(*lines))
-        h, r, t = unzipped[0], unzipped[1], unzipped[2]
+        h, r, t = unzipped[0], unzipped[1], [i.strip("'],") for i in unzipped[2]]
 
     show_graph(h, r, t)
