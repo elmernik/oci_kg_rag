@@ -1,4 +1,4 @@
-# Retriaval augmented generation in OCI using knowledge graphs and OCI GenAI
+# Retrieval augmented generation in OCI using knowledge graphs and OCI GenAI
 This is a demo for using OCI GenAI and knowledge graphs for retrieval augmented generation. 
 
 ## Example data
