@@ -167,23 +167,45 @@ class OCIGenAIChat(LLM, OCIGenAIChatBase):
         return "ocichat"
     
 
-    def _prepare_invocation_object(
+    def _prepare_chat_request(
             self, prompt: str, kwargs: Dict[str, Any]
     ) -> Dict[str, Any]:
         from oci.generative_ai_inference import models
-
+        """Prepare Chat Request depending on whether using Cohere or Llama, 
+        check out Oracle docs for API reference"""
         _model_kwargs = self.model_kwargs or {}
 
         chat_params = {**_model_kwargs, **kwargs}
-        chat_params["message"] = prompt
         chat_params["is_stream"] = self.is_stream
 
-        invocation_obj = models.CohereChatRequest(**chat_params)
-        return invocation_obj
+        provider = self.provider
+        if provider == "cohere":
+            chat_params["message"] = prompt
+            chat_request = models.CohereChatRequest(**chat_params)
+        elif provider == "meta":
+            content = models.TextContent()
+            content.text = prompt
+            message = models.Message()
+            message.role = "USER"
+            message.content = [content]
+            chat_params["api_format"] = models.BaseChatRequest.API_FORMAT_GENERIC
+            chat_params["messages"] = [message]
+            chat_request = models.GenericChatRequest(**chat_params)
+        else:
+            raise ValueError(f"Invalid provider: {provider}")
+
+        return chat_request
     
 
     def _process_response(self, response: Any) -> str:
-        return vars(response)["data"].chat_response.chat_history[1].message
+        """Return text content from LLM response"""
+        provider = self.provider
+        if provider == "cohere":
+            return vars(response)["data"].chat_response.text
+        elif provider == "meta":
+            return vars(response)["data"].chat_response.choices[0].message.content[0].text # This is a nightmare
+        else:
+            raise ValueError(f"Invalid provider: {provider}")
 
 
     def _call(
@@ -207,11 +229,12 @@ class OCIGenAIChat(LLM, OCIGenAIChatBase):
 
                 response = llm.invoke("Tell me a joke.")
         """
-
-        invocation_obj = self._prepare_invocation_object(prompt, kwargs)
+        
+        # Check oci python package documentation for more information about this
+        chat_request = self._prepare_chat_request(prompt, kwargs)
 
         serving_mode = models.OnDemandServingMode(model_id=self.model_id)
-        chat_detail = models.ChatDetails(serving_mode=serving_mode, chat_request=invocation_obj, compartment_id=self.compartment_id)
+        chat_detail = models.ChatDetails(serving_mode=serving_mode, chat_request=chat_request, compartment_id=self.compartment_id)
 
         response = self.client.chat(chat_detail)
         return self._process_response(response)
