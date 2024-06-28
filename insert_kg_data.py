@@ -1,11 +1,11 @@
 import oracledb
 from langchain.embeddings import HuggingFaceEmbeddings
 import array
-from config_private import user, pwd, dsn, wloc, wpwd
+from config_private import USER, PWD, DSN, WLOC, WPWD
 
 # Connect to database
-connection = oracledb.connect(user=user, password=pwd, dsn=dsn,
-                                wallet_location=wloc, wallet_password=wpwd)
+connection = oracledb.connect(user=USER, password=PWD, dsn=DSN,
+                                wallet_location=WLOC, wallet_password=WPWD)
 
 # Get cursor
 cursor = connection.cursor()

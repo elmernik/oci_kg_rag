@@ -1,6 +1,15 @@
 import streamlit as st
 from kg_rag_chain import create_kg_rag_chain
 from langchain_core.messages import HumanMessage, AIMessage
+from config_private import LANGSMITH_API_KEY, LANGCHAIN_PROJECT
+from config import TOP_K, K_AFTER_RERANK, ENABLE_TRACING, GET_NEXT_NODE, NEXT_NODE_K, PARENT_DEPTH, CHILD_DEPTH
+import os
+
+# LangSmith tracing
+if ENABLE_TRACING:
+    os.environ["LANGCHAIN_TRACING_V2"] = "true"
+    os.environ["LANGCHAIN_PROJECT"] = LANGCHAIN_PROJECT
+    os.environ["LANGCHAIN_API_KEY"] = LANGSMITH_API_KEY
 
 
 def reset_chat(init=False):
@@ -15,7 +24,8 @@ def reset_chat(init=False):
 @st.cache_resource
 def init_rag_chain():
     """Create the actual rag chain"""
-    return create_kg_rag_chain()
+    return create_kg_rag_chain(top_k=TOP_K, k_after_rerank=K_AFTER_RERANK, get_next_node=GET_NEXT_NODE,
+                               next_node_k=NEXT_NODE_K, parent_depth=PARENT_DEPTH, child_depth=CHILD_DEPTH)
 
 
 def format_and_show_context(context):

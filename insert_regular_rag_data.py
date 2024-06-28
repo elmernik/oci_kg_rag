@@ -2,15 +2,15 @@ from langchain_community.document_loaders.oracleai import OracleTextSplitter, Or
 import oracledb
 from langchain.embeddings import HuggingFaceEmbeddings
 import array
-from config_private import user, pwd, dsn, wloc, wpwd
+from config_private import USER, PWD, DSN, WLOC, WPWD
 
 # Read txt file
 with open("./example_data/oracle_wikipedia.txt", "r") as f:
     doc_content = "".join(f.readlines())
 
 # Connect to database
-connection = oracledb.connect(user=user, password=pwd, dsn=dsn,
-                                wallet_location=wloc, wallet_password=wpwd)
+connection = oracledb.connect(user=USER, password=PWD, dsn=DSN,
+                                wallet_location=WLOC, wallet_password=WPWD)
 
 # Get cursor
 cursor = connection.cursor()

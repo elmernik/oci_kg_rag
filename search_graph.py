@@ -1,7 +1,7 @@
 import oracledb
 from langchain.embeddings import HuggingFaceEmbeddings
 import array
-from config_private import user, pwd, dsn, wloc, wpwd
+from config_private import USER, PWD, DSN, WLOC, WPWD
 
 
 def vector_search_graph(query, top_n=5):
@@ -13,12 +13,12 @@ def vector_search_graph(query, top_n=5):
     # Define SQL
     vec_search_sql = f'''SELECT OBJECT_1, RELATION, OBJECT_2 
         FROM KG 
-        ORDER BY VECTOR_DISTANCE(vec, :query_vector, COSINE) 
+        ORDER BY VECTOR_DISTANCE(embedding, :query_vector, COSINE) 
         FETCH EXACT FIRST {top_n} ROWS ONLY'''
 
     # Connect to database
-    connection = oracledb.connect(user=user, password=pwd, dsn=dsn,
-                                wallet_location=wloc, wallet_password=wpwd)
+    connection = oracledb.connect(user=USER, password=PWD, dsn=DSN,
+                                wallet_location=WLOC, wallet_password=WPWD)
 
     # Get cursor
     cursor = connection.cursor()
@@ -45,8 +45,8 @@ def get_next_nodes(start_node, depth=1, parent_or_child="child"):
         FROM KG WHERE OBJECT_{poc} = :query_object'''
 
     # Connect to database
-    connection = oracledb.connect(user=user, password=pwd, dsn=dsn,
-                                wallet_location=wloc, wallet_password=wpwd)
+    connection = oracledb.connect(user=USER, password=PWD, dsn=DSN,
+                                wallet_location=WLOC, wallet_password=WPWD)
     cursor = connection.cursor()
 
     def _fetch_nodes(cursor, current_node, depth, current_depth, sql, poc):

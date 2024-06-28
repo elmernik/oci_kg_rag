@@ -11,14 +11,16 @@ from langchain.retrievers.document_compressors import FlashrankRerank
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain_community.vectorstores.utils import DistanceStrategy
 import oracledb
-from config_private import user, pwd, dsn, wloc, wpwd
+from config_private import USER, PWD, DSN, WLOC, WPWD, COMPARTMENT_OCID
+from custom_retriever import KnowledgeGraphRetriever
 
-def create_kg_rag_chain():
+
+def create_kg_rag_chain(top_k, k_after_rerank, get_next_node=False, next_node_k=0, parent_depth=0, child_depth=0):
     """Create the rag chain on the knowledge graph table"""
 
     # Connect to database
-    connection = oracledb.connect(user=user, password=pwd, dsn=dsn,
-                                    wallet_location=wloc, wallet_password=wpwd)
+    connection = oracledb.connect(user=USER, password=PWD, dsn=DSN,
+                                    wallet_location=WLOC, wallet_password=WPWD)
 
     # Embeddings model
     embed_model= HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-l6-v2")
@@ -28,17 +30,19 @@ def create_kg_rag_chain():
                             distance_strategy=DistanceStrategy.COSINE)
 
     # Retriever 
-    retriever = vector_store.as_retriever(search_kwargs={"k": 10})
+    retriever = KnowledgeGraphRetriever(vector_store=vector_store, 
+                    search_kwargs={"k": top_k, "get_next_node": get_next_node, 
+                                   "next_node_k": next_node_k, "parent_depth": parent_depth, "child_depth": child_depth})
 
     # Compressor/Reranker
-    compressor = FlashrankRerank(top_n=10)
+    compressor = FlashrankRerank(top_n=k_after_rerank)
     compression_retriever = ContextualCompressionRetriever(base_compressor=compressor, base_retriever=retriever)
 
     # Initialize llm for chat
     chatllm = ChatOCIGenAI(
         model_id="cohere.command-r-plus",
         service_endpoint="https://inference.generativeai.eu-frankfurt-1.oci.oraclecloud.com",
-        compartment_id="[INSERT COMPARTMENT ID]",
+        compartment_id=COMPARTMENT_OCID,
         model_kwargs={"temperature": 0.3, "max_tokens": 500},
     )
 
@@ -66,7 +70,8 @@ def create_kg_rag_chain():
     # Answer question
     system_prompt = (
         "You are an assistant for question-answering tasks. "
-        "Use the following pieces of retrieved context to answer "
+        "Use the following pieces of retrieved context "
+        "in the form of knowledge graph triplets answer to "
         "the question. If you don't know the answer, say that you "
         "don't know. Use three sentences maximum and keep the "
         "answer concise."
@@ -106,3 +111,5 @@ def create_kg_rag_chain():
     )
 
     return conversational_rag_chain
+
+
