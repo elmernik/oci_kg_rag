@@ -50,7 +50,7 @@ ids = [i for i in range(1, len(list_chunks)+1)]
 
 # Insert data
 data = list(zip(*[ids, list_chunks, list_vectors]))
-cursor.executemany("INSERT INTO DOC_CHUNKS VALUES (:1, 'oracle_wikipedia.txt', :2, :3)", data)
+cursor.executemany("INSERT INTO DOC_CHUNKS(ID, DOC, TEXT, EMBEDDING) VALUES (:1, 'oracle_wikipedia.txt', :2, :3)", data)
 
 # Commit and close connection
 connection.commit()
